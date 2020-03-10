@@ -1,6 +1,8 @@
 # HASHING - provides O(1) time on average for insert, serach, delete
-# SEPERATE CHAINING - make each hash table cell point to a linked list of 
-# records with same hash func value (a side road)
+# SEPERATE CHAINING - each hash table cell points to list of same hashed values (a side road)
+
+# Mon: Implement insert, remove, retrieve
+# Tues: Linked lists to avoid collisions
 
 class LinkedPair:
     def __init__(self, key, value):
@@ -18,7 +20,7 @@ class HashTable:
         self.capacity = capacity  # Number of buckets in the hash table
         self.storage = [None] * capacity
 
-
+    # _underscore = don't touch, don't use outside class, is private
     def _hash(self, key):
        # Hash an arbitrary key and return an integer.
         return hash(key)
@@ -29,8 +31,7 @@ class HashTable:
         return hash(key) = hash(key-1) * 33 ^ str[key]
         
 
-
-    def _hash_mod(self, key):
+    def _hash_mod(self, key): # creates/finds index?
         '''
         Take an arbitrary key and return a valid integer index
         within the storage capacity of the hash table.
@@ -39,41 +40,37 @@ class HashTable:
 
 
     def insert(self, key, value): # key=index / O(1)
-        if self.count >= self.capacity:
-            self.resize()
-        if key > self.count:
-            print('Error: out of range')
-            return
-        
-        for i in range(count, key, -1):
-            self.storage[i] = self.storage[i-1]
+        index = self._hash_mod(key)
 
-        self.storage[key] = value
-        self.count += 1
+        if self.storage[index] is not None:
+            print('Error: key is use')
+        else: 
+            self.storage[key] = value
 
 
     def remove(self, key): # O(1)
-        for i in range(self.count, key, -1):
-            if self.storage.retrieve(key):
-                key.pop()
-                self.count -= 1
+        index = self._hash_mod(key)
+
+        if self.storage[index] is not None:
+             self.storage[index] = None
+        else: 
+            print('Key not found')
 
 
     def retrieve(self, key):
-        if self.storage[key]:
-            return key
-        else:
-            print('Error: key not found')
-            return
+        index = self._hash_mod(key)
+        return self.storage[index]
 
 
     def resize(self):
+        # need to rehash everything into new index else nums change and won't be able to find anything(?)
         self.capacity *= 2
         new_storage = [None] * self.capacity
+        old_storage = self.storage.copy()
 
-        for i in range (self.count):
-            new_storage[i] = self.storage[i]
-        self.storage = new_storage
+        for bucket_item in old_storage:
+            self.insert(bucket_item.key, bucket_item.value)
+
 
 
 
