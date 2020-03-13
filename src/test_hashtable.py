@@ -1,7 +1,7 @@
 import unittest
 
 from hashtable import HashTable
-
+# from 'C:\Users\Sandra\Documents\DATA SCIENCE\Hash-Tables\src\hashtable.py' import HashTable
 
 class TestHashTable(unittest.TestCase):
 
